@@ -17,11 +17,7 @@ then
 	exit 1
 fi
 
-if [ -z "$USERNAME" ]
-then
-	echo "USERNAME not specified"
-	exit 1
-fi
+
 
 if [ -z "$LOCATION" ]
 then
@@ -30,6 +26,11 @@ fi
 
 if [ "$COMMAND" == "C" ]
 then
+	if [ -z "$USERNAME" ]
+	then
+		echo "USERNAME not specified"
+		exit 1
+	fi
 	sudo openconnect -l -b -u $USERNAME --script=$HOME/.vpn/vpnc-mod.sh --no-cert-check --no-xmlpost --csd-user=$LOGNAME --csd-wrapper=$HOME/.vpn/cstub.sh  https://vpn-usa-$LOCATION.emc.com
 fi	
 

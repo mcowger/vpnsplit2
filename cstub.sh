@@ -1,6 +1,6 @@
 #!/bin/sh
 
-echo "$0 $*"
+#echo "$0 $*"
 
 shift
 
@@ -21,12 +21,12 @@ while [ "$1" ]; do
     shift
 done
 
-echo "URL:          $URL"
-echo "TICKET:       $TICKET"
-echo "STUB:         $STUB"
-echo "GROUP:        $GROUP"
-echo "CERTHASH:     $CERTHASH"
-echo "LANGSELEN:    $LANGSELEN"
+#echo "URL:          $URL"
+#echo "TICKET:       $TICKET"
+#echo "STUB:         $STUB"
+#echo "GROUP:        $GROUP"
+#echo "CERTHASH:     $CERTHASH"
+#echo "LANGSELEN:    $LANGSELEN"
 
 ARGS="-url $URL -ticket $TICKET -stub $STUB"
 if [ "$GROUP" ]; then ARGS="$ARGS -group $GROUP"; fi

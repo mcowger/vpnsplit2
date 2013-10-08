@@ -78,7 +78,7 @@ add_network 24.147.105.75 32
 		
 
 # Execute default script
-. /etc/vpnc/vpnc-script
+. $HOME/.vpn/vpnc-script
 
 
 
