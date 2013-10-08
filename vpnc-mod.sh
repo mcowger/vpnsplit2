@@ -59,7 +59,7 @@ export CISCO_SPLIT_INC=0
 # Delete DNS info provided by VPN server to use internet DNS
 # Comment following line to use DNS beyond VPN tunnel
 #unset INTERNAL_IP4_DNS
-echo INTERNAL_IP4_DNS > /tmp/me
+#echo INTERNAL_IP4_DNS > /tmp/me
 
 # List of IPs beyond VPN tunnel
 add_network 10.0.0.0 8
