@@ -8,7 +8,7 @@ Install Instructions:
 1. Install the most recent XCode for your platform (5.01 for Mavericks).  Include the command line tools.
 2. Install the [Mac OS X TUN/TAP driver](http://tuntaposx.sourceforge.net/)
 3. Install [homebrew](http://mxcl.github.com/homebrew/)
-4. Use homebrew to install opeconnect
+4. Use homebrew to install openconnect
 
     >brew update
     > 
