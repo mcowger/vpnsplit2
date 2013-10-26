@@ -31,10 +31,17 @@ then
 		echo "USERNAME not specified"
 		exit 1
 	fi
-	sudo openconnect -l -b -u $USERNAME --script=$HOME/.vpn/vpnc-mod.sh --no-cert-check --no-xmlpost --csd-user=$LOGNAME --csd-wrapper=$HOME/.vpn/cstub.sh  https://vpn-usa-$LOCATION.emc.com
+	openconnect -l -b -v -u $USERNAME --script=$HOME/.vpn/vpnc-mod.sh --no-cert-check --no-xmlpost --csd-user=$LOGNAME --csd-wrapper=$HOME/.vpn/cstub.sh  https://vpn-usa-$LOCATION.emc.com
 fi	
 
 if [ "$COMMAND" == "D" ]
 then
-	sudo killall openconnect
+	export TUNDEV="tun0"
+	killall openconnect
+	scutil >/dev/null 2>&1 <<-EOF
+		open
+		d.init
+		remove State:/Network/Service/$TUNDEV/DNS
+		close
+	EOF
 fi	
