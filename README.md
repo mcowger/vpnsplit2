@@ -31,15 +31,7 @@ To connect to the VPN:
 You'll get some output that looks like the following:
 
 ````
-<HOMEDIR>/.vpn/cstub.sh /tmp/csdrB5b6c -ticket "07758A474315618622432261" -stub "0" -group "" -certhash "9CE3B7DC697B5FDAA01538E4ECA4B741:" -url "[redacted]" -langselen
-URL:          "[redacted]"
-TICKET:       "07758A474315618622432261"
-STUB:         "0"
-GROUP:
-CERTHASH:     "9CE3B7DC697B5FDAA01538E4ECA4B741:"
-LANGSELEN:
 Executing /opt/cisco/hostscan/bin/cstub -url "[redacted]/CACHE/sdesktop/install/result.htm" -ticket "07758A474315618622432261" -stub "0" -certhash "9CE3B7DC697B5FDAA01538E4ECA4B741:"
-<BANNER>
 Please enter your username and password.
 PASSCODE:
 ````
