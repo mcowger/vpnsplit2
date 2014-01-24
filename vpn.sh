@@ -1,5 +1,12 @@
 #!/bin/bash
 
+echo "Checking for update"
+export CURRENT=`pwd`
+cd $(dirname $0)
+git pull
+cd $CURRENT
+
+
 if [[ $EUID -ne 0 ]]; then
    echo "This script must be run as root or sudo " 1>&2
    exit 1
