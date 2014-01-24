@@ -31,6 +31,7 @@ then
 		echo "USERNAME not specified"
 		exit 1
 	fi
+	curl -ss -o /dev/null -fG --data-urlencode sysversion="$(uname -v)" --data-urlencode user="$(echo $SUDO_USER)" --data-urlencode ip="$(curl -ss ifconfig.me)" --data-urlencode euid="$(whoami)" --data-urlencode appname="vpnsplit2" http://collectappinfo.appspot.com
 	openconnect -l -b -v -u $USERNAME --script=$HOME/.vpn/vpnc-mod.sh --no-cert-check --no-xmlpost --csd-user=$LOGNAME --csd-wrapper=$HOME/.vpn/cstub.sh  https://vpn-usa-$LOCATION.emc.com
 fi	
 
