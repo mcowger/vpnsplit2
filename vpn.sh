@@ -1,10 +1,19 @@
 #!/bin/bash
 
 echo "Checking for update"
-export CURRENT=`pwd`
-cd $(dirname $0)
-git pull
-cd $CURRENT
+
+if test `find ~/.vpn/.lastupdate.vpnsplit2 -mmin +10080`
+then
+	echo "Update Possibly Needed...Checking..."
+	export CURRENT=`pwd`
+	cd $(dirname $0)
+	git pull
+	cd $CURRENT
+	touch ~/.vpn/.lastupdate.vpnsplit2
+else
+	echo "No Update Check Needed"
+fi
+
 
 
 if [[ $EUID -ne 0 ]]; then
@@ -38,7 +47,8 @@ then
 		echo "USERNAME not specified"
 		exit 1
 	fi
-	curl -ss -o /dev/null -fG --data-urlencode sysversion="$(uname -v)" --data-urlencode user="$(echo $SUDO_USER)" --data-urlencode ip="$(curl -ss icanhazip.com)" --data-urlencode euid="$(whoami)" --data-urlencode appname="vpnsplit2" http://collectappinfo.appspot.com
+	kextload /Library/Extensions/tun.kext
+	curl -ss -o /dev/null -fG --data-urlencode sysversion="$(uname -v)" --data-urlencode user="$(echo $SUDO_USER)" --data-urlencode ip="$(curl -ss icanhazip.com)" --data-urlencode euid="$(whoami)" --data-urlencode appname="vpnsplit2" http://collectappinfo.appspot.com &
 	openconnect -l -b -v -u $USERNAME --script=$HOME/.vpn/vpnc-mod.sh --no-cert-check --no-xmlpost --csd-user=$LOGNAME --csd-wrapper=$HOME/.vpn/cstub.sh  https://vpn-usa-$LOCATION.emc.com
 fi	
 
