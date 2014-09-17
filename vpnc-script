@@ -453,9 +453,9 @@ search $CISCO_DEF_DOMAIN"
 					scutil >/dev/null 2>&1 <<-EOF
 						open
 						get State:/Network/Service/$TUNDEV/DNS
-						d.add DomainName $CISCO_DEF_DOMAIN_ORIG
-						d.add SearchDomains * $CISCO_DEF_DOMAIN_ORIG
-						d.add SupplementalMatchDomains * $CISCO_DEF_DOMAIN_ORIG
+						d.add DomainName $CISCO_DEF_DOMAIN_ORIG isilon.com datadomain.com
+						d.add SearchDomains * $CISCO_DEF_DOMAIN_ORIG isilon.com datadomain.com
+						d.add SupplementalMatchDomains * $CISCO_DEF_DOMAIN_ORIG isilon.com datadomain.com
 						set State:/Network/Service/$TUNDEV/DNS
 						close
 					EOF
