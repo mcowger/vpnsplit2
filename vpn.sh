@@ -47,10 +47,13 @@ then
 		echo "USERNAME not specified"
 		exit 1
 	fi
+	echo "Loading kext"
 	kextload /Library/Extensions/tun.kext
+	echo "Updating Stats"
 	curl -ss -o /dev/null -fG --data-urlencode sysversion="$(uname -v)" --data-urlencode user="$(echo $SUDO_USER)" --data-urlencode ip="$(curl -ss icanhazip.com)" --data-urlencode euid="$USERNAME)" --data-urlencode appname="vpnsplit2" http://collectappinfo.appspot.com &
-	openconnect -l -b -v -u $USERNAME --script=$HOME/.vpn/vpnc-mod.sh --no-cert-check --no-xmlpost --csd-user=$LOGNAME --csd-wrapper=$HOME/.vpn/cstub.sh  https://vpn-usa-$LOCATION.emc.com
-fi	
+	echo "Running openconnect"
+	openconnect -l -b -vvv   -u $USERNAME --script=$HOME/.vpn/vpnc-mod.sh --no-cert-check --no-xmlpost --csd-user=$LOGNAME --csd-wrapper=$HOME/.vpn/cstub.sh  https://vpn-usa-$LOCATION.emc.com
+fi
 
 if [ "$COMMAND" == "D" ]
 then
@@ -62,4 +65,7 @@ then
 		remove State:/Network/Service/$TUNDEV/DNS
 		close
 	EOF
-fi	
+	echo "Briefly bouncing en0/en1 to clear cached DNS"
+	sudo ifconfig en0 down && sudo ifconfig en0 up
+	sudo ifconfig en1 down && sudo ifconfig en1 up
+fi
