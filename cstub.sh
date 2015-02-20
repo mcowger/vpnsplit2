@@ -33,6 +33,7 @@ if [ "$GROUP" ]; then ARGS="$ARGS -group $GROUP"; fi
 ARGS="$ARGS -certhash $CERTHASH"
 if [ "$LANGSELEN" ]; then ARGS="$ARGS -langsel $LANGSELEN"; fi
 
-echo "Executing /opt/cisco/hostscan/bin/cstub $ARGS"
+#echo "Executing /opt/cisco/hostscan/bin/cstub $ARGS"
+echo "Runnning hostscan binary"
 /opt/cisco/hostscan/bin/cstub $ARGS
 #$HOME/.vpn/cstub $ARGS

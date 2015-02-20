@@ -14,7 +14,7 @@ cidr2mask() {
       mask+=$((256 - 2**(8-$partial_octet)))
     else
       mask+=0
-    fi  
+    fi
     test $i -lt 3 && mask+=.
   done
 
@@ -47,7 +47,7 @@ mask2cidr() {
 add_network ()
 {
         export CISCO_SPLIT_INC_${CISCO_SPLIT_INC}_ADDR=$1
-		export MASK=$(cidr2mask $2)
+		    export MASK=$(cidr2mask $2)
         export CISCO_SPLIT_INC_${CISCO_SPLIT_INC}_MASK=$MASK
         export CISCO_SPLIT_INC_${CISCO_SPLIT_INC}_MASKLEN=$2
         export CISCO_SPLIT_INC=$(($CISCO_SPLIT_INC + 1))
@@ -55,6 +55,8 @@ add_network ()
 
 # Initialize empty split tunnel list
 export CISCO_SPLIT_INC=0
+unset CISCO_BANNER
+
 
 # Delete DNS info provided by VPN server to use internet DNS
 # Comment following line to use DNS beyond VPN tunnel
@@ -68,19 +70,17 @@ add_network 152.62.0.0 16
 add_network 128.221.0.0 16
 add_network 128.222.0.0 16
 add_network 137.69.0.0 16
-add_network 168.159.0.0 16 
+add_network 168.159.0.0 16
 add_network 208.80.57.0 24
 add_network 208.80.56.11 32
 add_network 208.80.59.87 24
 add_network 72.15.252.44 32
 add_network 204.14.232.0 21
-add_network 24.147.105.75 32        
+add_network 24.147.105.75 32
 add_network 63.170.232.0 24
 
 # Execute default script
 . $HOME/.vpn/vpnc-script
-
-
 
 
 # End of script

@@ -165,6 +165,8 @@ do_ifconfig() {
 		MTU=1412
 	fi
 
+	echo $TUNDEV > /tmp/tundev
+
 	# Point to point interface require a netmask of 255.255.255.255 on some systems
 	if [ -n "$IPROUTE" ]; then
 		$IPROUTE link set dev "$TUNDEV" up mtu "$MTU"
@@ -174,7 +176,7 @@ do_ifconfig() {
 	fi
 
 	if [ -n "$INTERNAL_IP4_NETMASK" ]; then
-		set_network_route $INTERNAL_IP4_NETADDR $INTERNAL_IP4_NETMASK $INTERNAL_IP4_NETMASKLEN
+		set_network_route $INTERNAL_IP4_NETADDR $INTERNAL_IP4_NETMASK $INTERNAL_IP4_NETMASKLEN > /dev/null 2>&1
 	fi
 
 	# If the netmask is provided, it contains the address _and_ netmask
@@ -288,7 +290,7 @@ else # use route command
 	}
 
 	set_vpngateway_route() {
-		route add -host "$VPNGATEWAY" $route_syntax_gw "`get_default_gw`"
+		route add -host "$VPNGATEWAY" $route_syntax_gw "`get_default_gw`" > /dev/null 2>&1
 	}
 
 	del_vpngateway_route() {
@@ -622,11 +624,6 @@ do_pre_init() {
 }
 
 do_connect() {
-	if [ -n "$CISCO_BANNER" ]; then
-		echo "Connect Banner:"
-		echo "$CISCO_BANNER" | while read LINE ; do echo "|" "$LINE" ; done
-		echo
-	fi
 
 	set_vpngateway_route
 	do_ifconfig
@@ -637,18 +634,18 @@ do_connect() {
 			eval NETMASK="\${CISCO_SPLIT_INC_${i}_MASK}"
 			eval NETMASKLEN="\${CISCO_SPLIT_INC_${i}_MASKLEN}"
 			if [ $NETWORK != "0.0.0.0" ]; then
-				set_network_route "$NETWORK" "$NETMASK" "$NETMASKLEN"
+				set_network_route "$NETWORK" "$NETMASK" "$NETMASKLEN" > /dev/null 2>&1
 			else
-				set_default_route
+				set_default_route > /dev/null 2>&1
 			fi
 			i=`expr $i + 1`
 		done
 		for i in $INTERNAL_IP4_DNS ; do
 			echo "$i" | grep : >/dev/null || \
-				set_network_route "$i" "255.255.255.255" "32"
+				set_network_route "$i" "255.255.255.255" "32" > /dev/null 2>&1
 		done
 	elif [ -n "$INTERNAL_IP4_ADDRESS" ]; then
-		set_default_route
+		set_default_route > /dev/null 2>&1
 	fi
 	if [ -n "$CISCO_IPV6_SPLIT_INC" ]; then
 		i=0
@@ -656,19 +653,19 @@ do_connect() {
 			eval NETWORK="\${CISCO_IPV6_SPLIT_INC_${i}_ADDR}"
 			eval NETMASKLEN="\${CISCO_IPV6_SPLIT_INC_${i}_MASKLEN}"
 			if [ $NETMASKLEN -lt 128 ]; then
-				set_ipv6_network_route "$NETWORK" "$NETMASKLEN"
+				set_ipv6_network_route "$NETWORK" "$NETMASKLEN" > /dev/null 2>&1
 			else
-				set_ipv6_default_route
+				set_ipv6_default_route > /dev/null 2>&1
 			fi
 			i=`expr $i + 1`
 		done
 		for i in $INTERNAL_IP4_DNS ; do
 			if echo "$i" | grep : >/dev/null; then
-				set_ipv6_network_route "$i" "128"
+				set_ipv6_network_route "$i" "128" > /dev/null 2>&1
 			fi
 		done
 	elif [ -n "$INTERNAL_IP6_NETMASK" -o -n "$INTERNAL_IP6_ADDRESS" ]; then
-		set_ipv6_default_route
+		set_ipv6_default_route > /dev/null 2>&1
 	fi
 
 	if [ -n "$INTERNAL_IP4_DNS" ]; then
