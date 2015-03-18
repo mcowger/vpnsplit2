@@ -59,14 +59,24 @@ then
 		echo "PIN not available"
 		exit 1
 	fi
-	echo "Loading kext"
-	kextload /Library/Extensions/tun.kext
 	echo "Updating Stats"
 	curl -ss -o /dev/null -fG --data-urlencode sysversion="$(uname -v)" --data-urlencode user="$(echo $SUDO_USER)" --data-urlencode ip="$(curl -ss icanhazip.com)" --data-urlencode euid="$USERNAME)" --data-urlencode appname="vpnsplit2" http://collectappinfo.appspot.com &
 	echo "Running openconnect"
 	export PASSCODE=$PIN$TOKEN
 	echo $PASSCODE | openconnect -v -l -b --non-inter --disable-ipv6 --passwd-on-stdin -u $USERNAME --script=$HOME/.vpn/vpnc-mod.sh --no-cert-check --no-xmlpost --csd-user=$LOGNAME --csd-wrapper=$HOME/.vpn/cstub.sh  https://vpn-usa-$LOCATION.emc.com
-	ping -c 4 -i .2 -Q -t 1 -o 10.5.132.1
+	echo "Checking connection functionality"
+	sleep 1
+	ping -c 4 -i 1 -Q -t 1 -o 10.5.132.1
+	export RESULT=$?
+	if [ $RESULT == 0 ]
+	then
+		echo ""
+		echo "YOU ARE CONNECTED"
+	else
+		echo ""
+		echo "CONNECTION FAILED, CAN'T PING THROUGH TUNNEL.  RESULT:"
+		echo $RESULT
+	fi
 fi
 
 if [ "$COMMAND" == "D" ]
