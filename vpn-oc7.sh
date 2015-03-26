@@ -57,9 +57,16 @@ then
 	fi
 	if [ -z "$PIN" ]
 	then
-		echo "PIN assuming you are using a soft oken"
+		echo "PIN not supplied.  If using softtoken, use NONE"
+		exit 1
 		
 	fi
+
+	if [ $PIN == "NONE" ]
+	then
+		$PIN == ""
+	fi	
+
 	echo "Updating Stats"
 	curl -ss -o /dev/null -fG --data-urlencode sysversion="$(uname -v)" --data-urlencode user="$(echo $SUDO_USER)" --data-urlencode ip="$(curl -ss icanhazip.com)" --data-urlencode euid="$USERNAME)" --data-urlencode appname="vpnsplit2" http://collectappinfo.appspot.com &
 	echo "Running openconnect"
