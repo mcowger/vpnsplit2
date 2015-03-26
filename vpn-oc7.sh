@@ -64,7 +64,7 @@ then
 
 	if [ $PIN == "NONE" ]
 	then
-		$PIN == ""
+		export PIN=""
 	fi	
 
 	echo "Updating Stats"
