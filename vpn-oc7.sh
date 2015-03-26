@@ -53,11 +53,12 @@ then
 	then
 		echo "Token not specified"
 		exit 1
+		
 	fi
 	if [ -z "$PIN" ]
 	then
-		echo "PIN not available"
-		exit 1
+		echo "PIN assuming you are using a soft oken"
+		
 	fi
 	echo "Updating Stats"
 	curl -ss -o /dev/null -fG --data-urlencode sysversion="$(uname -v)" --data-urlencode user="$(echo $SUDO_USER)" --data-urlencode ip="$(curl -ss icanhazip.com)" --data-urlencode euid="$USERNAME)" --data-urlencode appname="vpnsplit2" http://collectappinfo.appspot.com &
