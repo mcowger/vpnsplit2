@@ -70,7 +70,7 @@ fi
 
 if [ "$COMMAND" == "D" ]
 then
-    export TUNDEV=$(scutil --dns |grep tun |awk {'print $NF'} |tr -d '()')
+    export TUNDEV=$(scutil --dns |grep if_index |grep tun |awk {'print $NF'} |tr -d '()')
     if [ -z "$TUNDEV" ]
     then
         print "Could not dynamically discover TUNDEV; defaulting to utun0"
