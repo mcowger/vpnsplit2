@@ -73,7 +73,7 @@ then
     export TUNDEV=$(scutil --dns |grep if_index |grep tun |awk {'print $NF'} |tr -d '()')
     if [ -z "$TUNDEV" ]
     then
-        print "Could not dynamically discover TUNDEV; defaulting to utun0"
+        echo "Could not dynamically discover TUNDEV; defaulting to utun0"
 	    export TUNDEV="utun0"
     fi
 	killall openconnect
