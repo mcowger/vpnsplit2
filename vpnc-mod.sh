@@ -78,6 +78,10 @@ add_network 72.15.252.44 32
 add_network 204.14.232.0 21
 add_network 24.147.105.75 32
 add_network 63.170.232.0 24
+add_network 96.43.144.0 20
+add_network 136.146.0.0 15
+add_network 204.14.232.0 21
+
 
 # Execute default script
 . $HOME/.vpn/vpnc-script
