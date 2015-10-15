@@ -37,3 +37,4 @@ if [ "$LANGSELEN" ]; then ARGS="$ARGS -langsel $LANGSELEN"; fi
 echo "Runnning hostscan binary"
 /opt/cisco/hostscan/bin/cstub $ARGS
 #$HOME/.vpn/cstub $ARGS
+echo "cstub complete"
