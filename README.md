@@ -24,7 +24,7 @@ Install Instructions:
 Usage
 ----------
 To connect to the VPN:
->   sudo ./vpn.sh C NT-USERNAME [south|_west_|east]
+>   sudo ~/.vpn/vpn.sh C NT-USERNAME [south|_west_|east]
 
 'C' stands for connect, your username should be obvious, and the optional parameter specifies which VPN server to connect to (defaults to west).
 
