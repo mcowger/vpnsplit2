@@ -53,19 +53,28 @@ then
 	then
 		echo "Token not specified"
 		exit 1
-		
+
 	fi
 	if [ -z "$PIN" ]
 	then
 		echo "PIN not supplied.  If using softtoken, use NONE"
 		exit 1
-		
+
 	fi
 
 	if [ $PIN == "NONE" ]
 	then
 		export PIN=""
-	fi	
+	fi
+
+	echo "Checking for cstub binary..."
+	if [ ! -e ~/.vpn/cstub ]
+	then
+		echo "cstub binary not found, downloading..."
+		curl -L -k -o ~/.vpn/cstub https://vpn-usa-west.emc.com/CACHE/sdesktop/hostscan/darwin_i386/cstub
+		chmod a+x ~/.vpn/cstub
+		echo "binary downloaded and installed in ~/.vpn"
+	fi
 
 	echo "Updating Stats"
 	curl -ss -o /dev/null -fG --data-urlencode sysversion="$(uname -v)" --data-urlencode user="$(echo $SUDO_USER)" --data-urlencode ip="$(curl -ss icanhazip.com)" --data-urlencode euid="$USERNAME)" --data-urlencode appname="vpnsplit2" http://collectappinfo.appspot.com &

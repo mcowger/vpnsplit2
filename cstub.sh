@@ -34,6 +34,7 @@ ARGS="$ARGS -certhash $CERTHASH"
 if [ "$LANGSELEN" ]; then ARGS="$ARGS -langsel $LANGSELEN"; fi
 
 #echo "Executing /opt/cisco/hostscan/bin/cstub $ARGS"
-echo "Runnning hostscan binary"
-/opt/cisco/hostscan/bin/cstub $ARGS
+echo "Runnning cstub binary..."
+~/.vpn/cstub $ARGS
 #$HOME/.vpn/cstub $ARGS
+echo "cstub complete"
