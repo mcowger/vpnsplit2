@@ -70,11 +70,11 @@ fi
 
 if [ "$COMMAND" == "D" ]
 then
-    export TUNDEV=$(scutil --dns |grep if_index |grep tun |awk {'print $NF'} |tr -d '()')
+    export TUNDEV=`cat /tmp/tundev`
     if [ -z "$TUNDEV" ]
     then
-        echo "Could not dynamically discover TUNDEV; defaulting to utun0"
-	    export TUNDEV="utun0"
+        echo "TUNDEV not found: DNS will likely be broken"
+        exit 1
     fi
 	killall openconnect
 	scutil >/dev/null 2>&1 <<-EOF
