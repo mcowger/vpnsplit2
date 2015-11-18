@@ -70,7 +70,12 @@ fi
 
 if [ "$COMMAND" == "D" ]
 then
-	export TUNDEV="tun0"
+    export TUNDEV=`cat /tmp/tundev`
+    if [ -z "$TUNDEV" ]
+    then
+        echo "TUNDEV not found: DNS will likely be broken"
+        exit 1
+    fi
 	killall openconnect
 	scutil >/dev/null 2>&1 <<-EOF
 		open
