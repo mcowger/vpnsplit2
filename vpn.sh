@@ -1,18 +1,22 @@
+
+
+
+
 #!/bin/bash
 
-echo "Checking for update"
-
-if test `find ~/.vpn/.lastupdate.vpnsplit2 -mmin +10080`
-then
-	echo "Update Possibly Needed...Checking..."
-	export CURRENT=`pwd`
-	cd $(dirname $0)
-	git pull
-	cd $CURRENT
-	touch ~/.vpn/.lastupdate.vpnsplit2
-else
-	echo "No Update Check Needed"
-fi
+# echo "Checking for update"
+#
+# if test `find ~/.vpn/.lastupdate.vpnsplit2 -mmin +10080`
+# then
+# 	echo "Update Possibly Needed...Checking..."
+# 	export CURRENT=`pwd`
+# 	cd $(dirname $0)
+# 	git pull
+# 	cd $CURRENT
+# 	touch ~/.vpn/.lastupdate.vpnsplit2
+# else
+# 	echo "No Update Check Needed"
+# fi
 
 
 
@@ -47,12 +51,27 @@ then
 		echo "USERNAME not specified"
 		exit 1
 	fi
-	echo "Loading kext"
-	kextload /Library/Extensions/tun.kext
-	echo "Updating Stats"
-	curl -ss -o /dev/null -fG --data-urlencode sysversion="$(uname -v)" --data-urlencode user="$(echo $SUDO_USER)" --data-urlencode ip="$(curl -ss icanhazip.com)" --data-urlencode euid="$USERNAME)" --data-urlencode appname="vpnsplit2" http://collectappinfo.appspot.com &
+
+	echo "Checking for openconnect binary..."
+	if [ ! -e /usr/local/bin/openconnect ]
+	then
+		echo "openconnect binary not found, install it with homebrew (http://brew.sh)"
+		exit 1
+	fi
+
+
+	echo "Checking for cstub binary..."
+	if [ ! -e /opt/cisco/hostscan/bin/cstub ]
+	then
+		echo "cstub binary not found, get a full copy of the anyconnect installer and add the 'Posture' component..."
+		exit 1
+	fi
+
+	#echo "Updating Stats"
+	#curl -ss -o /dev/null -fG --data-urlencode sysversion="$(uname -v)" --data-urlencode user="$(echo $SUDO_USER)" --data-urlencode ip="$(curl -ss icanhazip.com)" --data-urlencode euid="$USERNAME)" --data-urlencode appname="vpnsplit2" http://collectappinfo.appspot.com &
 	echo "Running openconnect"
-	openconnect -l -b -vvv   -u $USERNAME --script=$HOME/.vpn/vpnc-mod.sh --no-cert-check --no-xmlpost --csd-user=$LOGNAME --csd-wrapper=$HOME/.vpn/cstub.sh  https://vpn-usa-$LOCATION.emc.com
+	DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+	openconnect -u $USERNAME --background --timestamp --no-xmlpost --no-cert-check  vpn-usa-$LOCATION.emc.com --csd-wrapper $DIR/csdwrapper.sh --script=$DIR/vpnc-script
 	echo "Checking connection functionality"
 	sleep 1
 	ping -c 4 -i 1 -Q -t 1 -o 10.5.132.1
@@ -66,19 +85,39 @@ then
 		echo "CONNECTION FAILED, CAN'T PING THROUGH TUNNEL.  RESULT:"
 		echo $RESULT
 	fi
+	exit 0
 fi
 
 if [ "$COMMAND" == "D" ]
 then
-	export TUNDEV="tun0"
+	export TUNDEV=`cat /tmp/tundev`
+	if [ -z "$TUNDEV" ]
+	then
+		echo "TUNDEV not found: DNS will likely be broken"
+		echo "Trying tun0 anyways"
+		export TUNDEV="tun0"
+	fi
 	killall openconnect
 	scutil >/dev/null 2>&1 <<-EOF
 		open
-		d.init
+		remove State:/Network/Service/$TUNDEV/IPv4
 		remove State:/Network/Service/$TUNDEV/DNS
 		close
 	EOF
 	echo "Briefly bouncing en0/en1 to clear cached DNS"
 	sudo ifconfig en0 down && sudo ifconfig en0 up
 	sudo ifconfig en1 down && sudo ifconfig en1 up
+	exit 0
 fi
+
+echo "Command not properly specified - (C) or (D).  Try again"
+exit 1
+
+
+
+
+
+
+
+
+
