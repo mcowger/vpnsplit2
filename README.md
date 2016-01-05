@@ -5,6 +5,7 @@ vpnsplit2
 Install Instructions:
 ---------
 
+0. Make sure you have the LATEST version of Anyconnect installed (currently 4.2), WITH the posture option!  You might need to google to find this :)
 1. Install the most recent XCode for your platform by running `xcode-select --install`.  They may already be installed, in which case continue with the next stop.  If you can't figure this out, ask for help from someone, it only gets harder from here.
 2. Install [homebrew](http://mxcl.github.com/homebrew/) with this command: `ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"`
 4. Use homebrew to install openconnect: `brew update && brew install openconnect`
@@ -14,46 +15,41 @@ Install Instructions:
 Usage
 ----------
 To connect to the VPN:
->   sudo ~/.vpn/vpn-oc7.sh C NT-USERNAME [south|_west_|east] [PIN|NONE] [TOKEN CODE]
+>   sudo ~/.vpn/vpn.sh C NT-USERNAME [south|_west_|east] 
 
 * 'C' stands for connect, your username should be obvious.  
 * Select 'south', 'west', or 'east' to choose which endpoint you connect to.  
-* Next, if you use a hard token, enter your PIN...*if you use a soft token, just enter 'NONE' here*.  
-* The last field is for whatever value your token is displaying (either the 6 digits on the hard token, or the 8 from the soft token after you enter your PIN there).
 
 You'll get some output that looks like the following:
 
 ```
-Checking for update
-No Update Check Needed
+Checking for openconnect binary...
 Checking for cstub binary...
-cstub binary not found, downloading...
-  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
-                                 Dload  Upload   Total   Spent    Left  Speed
-  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
-100  354k  100  354k    0     0   277k      0  0:00:01  0:00:01 --:--:--  277k
-binary downloaded and installed in ~/.vpn
-Updating Stats
 Running openconnect
-Runnning cstub binary...
--url "https://scl02-01i11-vn01.emc.com/CACHE/sdesktop/install/result.htm" -ticket "5F9D63702BC7B1B366BB1322" -stub "0" -certhash "3D1F7128B9A4E8CD063D8FCB23FA3401:"
+<snip>
+Runnning cstub binary...with CLI:
+-url "https://scl02-01i11-vn01.emc.com/CACHE/sdesktop/install/result.htm" -ticket "0FEA06596BF0DAA068CEC7A3" -stub "0" -certhash "3D1F7128B9A4E8CD063D8FCB23FA3401:"
+<snip>
 cstub complete
-This Virtual Private Network is intended for
-authorized EMC employees and contractors.
-Unauthorized use is prohibited by law and may be
-subject to civil and/or criminal penalties. This system
-may be logged or monitored without further notice
-and resulting logs may be used as evidence in court.
+<snip>
 Please enter your username and password.
+PASSCODE:
+[2016-01-05 14:30:03] POST https://scl02-01i11-vn01.emc.com/+webvpn+/index.html
+[2016-01-05 14:30:07] Got CONNECT response: HTTP/1.1 200 OK
+[2016-01-05 14:30:07] CSTP connected. DPD 90, Keepalive 30
+[2016-01-05 14:30:07] Connected utun1 as 10.13.38.90, using SSL
+[2016-01-05 14:30:07] Continuing in background; pid 26621
 Checking connection functionality
+[2016-01-05 14:30:07] Established DTLS connection (using GnuTLS). Ciphersuite (DTLS0.9)-(RSA)-(AES-256-CBC)-(SHA1).
 PING 10.5.132.1 (10.5.132.1): 56 data bytes
-64 bytes from 10.5.132.1: icmp_seq=0 ttl=244 time=76.067 ms
+64 bytes from 10.5.132.1: icmp_seq=0 ttl=244 time=85.623 ms
 
 --- 10.5.132.1 ping statistics ---
 1 packets transmitted, 1 packets received, 0.0% packet loss
-round-trip min/avg/max/stddev = 76.067/76.067/76.067/0.000 ms
+round-trip min/avg/max/stddev = 85.623/85.623/85.623/0.000 ms
 
 YOU ARE CONNECTED
+
 ```
 
 
@@ -61,6 +57,6 @@ And the script will exit and you are connected, per the note above.  All standar
 
 
 To disconnect
->sudo ./vpn-oc7.sh D 
+>sudo ./.vpn/vpn.sh D 
 
 The openconnect process will be killed and all your routes and DNS are put back.
