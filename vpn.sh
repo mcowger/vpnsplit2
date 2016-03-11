@@ -71,7 +71,7 @@ then
 	#curl -ss -o /dev/null -fG --data-urlencode sysversion="$(uname -v)" --data-urlencode user="$(echo $SUDO_USER)" --data-urlencode ip="$(curl -ss icanhazip.com)" --data-urlencode euid="$USERNAME)" --data-urlencode appname="vpnsplit2" http://collectappinfo.appspot.com &
 	echo "Running openconnect"
 	DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-	openconnect -u $USERNAME --background --timestamp --no-xmlpost --no-cert-check  vpn-usa-$LOCATION.emc.com --csd-wrapper $DIR/csdwrapper.sh --script=$DIR/vpnc-script
+	openconnect -u $USERNAME --background --timestamp --no-cert-check  vpn-usa-$LOCATION.emc.com --csd-wrapper $DIR/csdwrapper.sh --script=$DIR/vpnc-script
 	echo "Checking connection functionality"
 	sleep 1
 	ping -c 4 -i 1 -Q -t 1 -o 10.5.132.1
