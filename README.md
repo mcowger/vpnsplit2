@@ -1,24 +1,23 @@
-vpnsplit2
-=========
+# vpnsplit2
 
-
-Install Instructions:
----------
+## Install Instructions:
 
 0. Make sure you have the LATEST version of Anyconnect installed (currently 4.2), WITH the posture option!  You might need to google to find this :)
 1. Install the most recent XCode for your platform by running `xcode-select --install`.  They may already be installed, in which case continue with the next stop.  If you can't figure this out, ask for help from someone, it only gets harder from here.
 2. Install [homebrew](http://mxcl.github.com/homebrew/) with this command: `ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"`
 4. Use homebrew to install openconnect: `brew update && brew install openconnect`
 5. Get the latest wrapper scripts from my github: `cd ~ && git clone http://github.com/mcowger/vpnsplit2.git .vpn && cd .vpn &&  cd -`
-6. Everything is installed!
+6. Set right permissions to the script: `chmod +x ~/.vpn/vpn.sh`
+7. You are good to go!
 
-Usage
-----------
-To connect to the VPN:
->   sudo ~/.vpn/vpn.sh C NT-USERNAME [south|_west_|east] 
+## Usage
 
-* 'C' stands for connect, your username should be obvious.  
-* Select 'south', 'west', or 'east' to choose which endpoint you connect to.  
+#### To connect to the VPN:
+>   sudo ~/.vpn/vpn.sh C NT-USERNAME [VPN server]
+
+* `C` stands for connect
+* Your VPN username
+* Type the VPN server endpoint you want to connect to (e.g. `vpn-usa-west.mycompany.com`). Not needed if you have set the `VPNSERVER` environment variable.
 
 You'll get some output that looks like the following:
 
@@ -56,7 +55,8 @@ YOU ARE CONNECTED
 And the script will exit and you are connected, per the note above.  All standard resources are available via the VPN, but the tunnel is now a split include (meaning only certain address spaces are routed through the VPN, and all others around it).  Split-DNS is also enabled, meaning that the DNS server pushed by the VPN server is used only for the pushed domains, and all lookups happen against your standard DNS server.
 
 
-To disconnect
->sudo ./.vpn/vpn.sh D 
+#### To disconnect
+
+> sudo ~/.vpn/vpn.sh D
 
 The openconnect process will be killed and all your routes and DNS are put back.
