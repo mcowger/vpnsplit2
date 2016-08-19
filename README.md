@@ -1,13 +1,13 @@
 # vpnsplit2
 
-## Install Instructions:
+## Install Instructions
 
 0. Make sure you have the LATEST version of Anyconnect installed (currently 4.2), WITH the posture option!  You might need to google to find this :)
 1. Install the most recent XCode for your platform by running `xcode-select --install`.  They may already be installed, in which case continue with the next stop.  If you can't figure this out, ask for help from someone, it only gets harder from here.
 2. Install [homebrew](http://mxcl.github.com/homebrew/) with this command: `ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"`
 4. Use homebrew to install openconnect: `brew update && brew install openconnect`
 5. Get the latest wrapper scripts from my github: `cd ~ && git clone http://github.com/mcowger/vpnsplit2.git .vpn && cd .vpn &&  cd -`
-6. Set write permissions to the script: `chmod +x ~/.vpn/vpn.sh`
+6. Set execute permissions to the script: `chmod +x ~/.vpn/vpn.sh`
 7. You are good to go!
 
 ## Usage
