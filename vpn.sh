@@ -1,7 +1,3 @@
-
-
-
-
 #!/bin/bash
 
 # echo "Checking for update"
@@ -21,15 +17,15 @@
 
 
 if [[ $EUID -ne 0 ]]; then
-   echo "This script must be run as root or sudo " 1>&2
-   exit 1
+	 echo "This script must be run as root or sudo " 1>&2
+	 exit 1
 fi
 
 
-export COMMAND=$1
-export USERNAME=$2
-export LOCATION=$3
-export DIR=`dirname $0`
+COMMAND=$1
+USERNAME=$2
+LOCATION=$3
+DIR=`dirname $0`
 
 if [ -z "$COMMAND" ]
 then
@@ -38,18 +34,22 @@ then
 fi
 
 
-
-if [ -z "$LOCATION" ]
-then
-	export LOCATION="west"
-fi
-
 if [ "$COMMAND" == "C" ]
 then
 	if [ -z "$USERNAME" ]
 	then
 		echo "USERNAME not specified"
 		exit 1
+	fi
+
+	if [ -z "$LOCATION" ]
+	then
+		LOCATION=$VPNSERVER
+		if [ -z "$LOCATION" ]
+		then
+			echo "VPN endpoint not specified. Please set the VPNSERVER environment variable or pass the endpoint as an argument"
+			exit 1
+		fi
 	fi
 
 	echo "Checking for openconnect binary..."
@@ -71,7 +71,7 @@ then
 	#curl -ss -o /dev/null -fG --data-urlencode sysversion="$(uname -v)" --data-urlencode user="$(echo $SUDO_USER)" --data-urlencode ip="$(curl -ss icanhazip.com)" --data-urlencode euid="$USERNAME)" --data-urlencode appname="vpnsplit2" http://collectappinfo.appspot.com &
 	echo "Running openconnect"
 	DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-	openconnect -u $USERNAME --background --timestamp --no-cert-check  vpn-usa-$LOCATION.emc.com --csd-wrapper $DIR/csdwrapper.sh --script=$DIR/vpnc-script
+	openconnect -u $USERNAME --background --timestamp --no-cert-check $LOCATION --csd-wrapper $DIR/csdwrapper.sh --script=$DIR/vpnc-script
 	echo "Checking connection functionality"
 	sleep 1
 	ping -c 4 -i 1 -Q -t 1 -o 10.5.132.1
@@ -112,12 +112,3 @@ fi
 
 echo "Command not properly specified - (C) or (D).  Try again"
 exit 1
-
-
-
-
-
-
-
-
-
